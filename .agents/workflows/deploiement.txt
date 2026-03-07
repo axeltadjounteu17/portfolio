@@ -1,0 +1,27 @@
+🚀 Comment déployer sur Vercel (le plus rapide)
+bash# 1. Build ton projet
+npm run build
+
+# 2. Push sur GitHub
+git init
+git add .
+git commit -m "portfolio v1"
+git push origin main
+```
+Ensuite sur **vercel.com** → Import Git Repository → sélectionne ton repo → **Deploy**. C'est tout.
+
+---
+
+## 📄 Pour ton CV PDF
+
+Place ton fichier dans `/public/` :
+```
+public/
+  └── CV_Axel_Renaud_Tadjounteu.pdf
+Et dans ton code, le lien sera simplement :
+jsx<a href="/CV_Axel_Renaud_Tadjounteu.pdf" download>
+  Télécharger mon CV
+</a>
+Le PDF sera accessible directement à ton-site.vercel.app/CV_Axel_Renaud_Tadjounteu.pdf.
+
+Mon conseil : Vercel + GitHub, c'est le duo standard des devs pro. Chaque git push redéploie automatiquement — zéro friction.

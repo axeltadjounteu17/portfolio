@@ -1,0 +1,120 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand Colors - User choice */
+  --color-brand-blue: #2563eb;
+  --color-brand-green: #10b981;
+  --color-brand-red: #ef4444;
+  --color-brand-violet: #8b5cf6;
+  --color-brand-white: #f8fafc;
+  --color-brand-black: #070b14;
+
+  /* Semantic Colors - Default Light */
+  --color-bg-main: #f0f4ff;
+  --color-bg-secondary: #ffffff;
+  --color-text-main: #0f172a;
+  --color-text-muted: #475569;
+  --color-border-subtle: rgba(37, 99, 235, 0.12);
+  --color-glass-bg: rgba(255, 255, 255, 0.85);
+  --color-glass-border: rgba(37, 99, 235, 0.12);
+
+  --font-mono: "Geist Mono", "Roboto Mono", monospace;
+  --font-sans: "Inter", system-ui, sans-serif;
+
+  --shadow-premium:
+    0 4px 20px -5px rgba(0, 0, 0, 0.05), 0 8px 30px -10px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Mode Overrides */
+.dark {
+  --color-bg-main: #070b14;
+  --color-bg-secondary: #0d1526;
+  --color-text-main: #f0f4ff;
+  --color-text-muted: #7b8aab;
+  --color-border-subtle: rgba(255, 255, 255, 0.08);
+  --color-glass-bg: rgba(13, 21, 38, 0.8);
+  --color-glass-border: rgba(255, 255, 255, 0.1);
+  --shadow-premium: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+@layer base {
+  body {
+    @apply bg-bg-main text-text-main antialiased transition-colors duration-300;
+    font-family: var(--font-sans);
+  }
+
+  code,
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+
+  /* Base Typography */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply tracking-tight font-black;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-glass-bg backdrop-blur-md border border-glass-border shadow-premium;
+  }
+
+  .navbar-glass {
+    background-color: rgba(240, 244, 255, 0.65);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
+  }
+
+  .dark .navbar-glass {
+    background-color: rgba(7, 11, 20, 0.65);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Shine sweep effect for buttons */
+  .btn-shine {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-shine::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 40%;
+    height: 200%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.25),
+      transparent
+    );
+    transform: skewX(-20deg);
+    animation: shine-sweep 4s ease-in-out infinite;
+  }
+  @keyframes shine-sweep {
+    0%, 100% { left: -60%; }
+    50% { left: 120%; }
+  }
+
+  /* 3D tilt card on hover */
+  .tilt-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+  }
+  .tilt-card:hover {
+    transform: translateY(-6px) rotateX(2deg) rotateY(-2deg);
+    box-shadow: 0 20px 40px -15px rgba(37, 99, 235, 0.15);
+  }
+  .dark .tilt-card:hover {
+    box-shadow: 0 20px 40px -15px rgba(37, 99, 235, 0.25);
+  }
+}
