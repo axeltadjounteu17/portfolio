@@ -1,30 +1,8 @@
-import { motion, useInView } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Shield, Cloud, Code, Terminal, Database, Server, Globe, BrainCircuit } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useState, useEffect, useRef } from 'react';
 
-const AnimatedCounter = ({ target, duration = 1.5 }) => {
-  const [count, setCount] = useState(0);
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
 
-  useEffect(() => {
-    if (!isInView) return;
-    const startTime = performance.now();
-    const animate = (now) => {
-      const elapsed = (now - startTime) / (duration * 1000);
-      if (elapsed < 1) {
-        setCount(Math.floor(target * elapsed));
-        requestAnimationFrame(animate);
-      } else {
-        setCount(target);
-      }
-    };
-    requestAnimationFrame(animate);
-  }, [isInView, target, duration]);
-
-  return <span ref={ref}>{count}%</span>;
-};
 
 const Skills = () => {
   const { t } = useTranslation();
@@ -35,7 +13,6 @@ const Skills = () => {
       subtitle: t('skills.categories.cyber_sub'),
       icon: <Shield className="text-brand-blue" />,
       color: "border-brand-blue/30",
-      progress: 85,
       skills: ["Sécurité réseau", "Analyse des menaces", "IDS/IPS", "Snort", "Scapy", "ARP spoofing", "DoS/DDoS", "Fortinet NSE", "Parrot OS"]
     },
     {
@@ -43,7 +20,6 @@ const Skills = () => {
       subtitle: t('skills.categories.network_sub'),
       icon: <Globe className="text-brand-green" />,
       color: "border-brand-green/30",
-      progress: 88,
       skills: ["Cisco Packet Tracer", "GNS3", "EVE-NG", "VLAN", "OSPF", "DHCP / DNS", "ACL / SSH", "Linux Admin", "Windows Server", "VMware", "VirtualBox"]
     },
     {
@@ -51,7 +27,6 @@ const Skills = () => {
       subtitle: t('skills.categories.dev_sub'),
       icon: <Code className="text-brand-violet" />,
       color: "border-brand-violet/30",
-      progress: 80,
       skills: ["Python", "Kotlin", "Java / JavaFX", "PHP", "SQL", "Tkinter", "Android Studio", "MVC Pattern"]
     },
     {
@@ -59,7 +34,6 @@ const Skills = () => {
       subtitle: t('skills.categories.db_sub'),
       icon: <Database className="text-brand-blue" />,
       color: "border-brand-blue/30",
-      progress: 82,
       skills: ["MySQL", "MariaDB", "MongoDB", "PgAdmin", "Triggers", "Procedures", "Views", "Transactions"]
     },
     {
@@ -67,7 +41,6 @@ const Skills = () => {
       subtitle: t('skills.categories.cloud_sub'),
       icon: <Cloud className="text-brand-green" />,
       color: "border-brand-green/30",
-      progress: 75,
       skills: ["Azure (VM/Web)", "AWS re/Start", "Docker", "Ubuntu", "VS Code", "Git"]
     },
     {
@@ -75,7 +48,6 @@ const Skills = () => {
       subtitle: t('skills.categories.ai_sub'),
       icon: <BrainCircuit className="text-brand-violet" />,
       color: "border-brand-violet/30",
-      progress: 70,
       skills: ["Machine Learning", "LLM / IA générative", "Analyse de données Python", "AI Fluency (Anthropic)"]
     }
   ];
@@ -132,22 +104,7 @@ const Skills = () => {
               <h3 className="text-text-main font-bold text-lg mb-1">{group.category}</h3>
               <p className="text-xs text-text-muted mb-6 font-medium">{group.subtitle}</p>
 
-              {/* Skill Bar */}
-              <div className="mb-8 space-y-2">
-                 <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest">
-                    <span className="text-text-muted">{t('skills.mastery')}</span>
-                    <span className="text-brand-blue"><AnimatedCounter target={group.progress} /></span>
-                 </div>
-                 <div className="w-full h-1 bg-black/5 dark:bg-white/5 rounded-full overflow-hidden">
-                    <motion.div 
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${group.progress}%` }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
-                      className="h-full bg-brand-blue" 
-                    />
-                 </div>
-              </div>
+
               
               <div className="flex flex-wrap gap-2 mt-auto">
                 {group.skills.map((item) => (

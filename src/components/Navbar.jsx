@@ -96,18 +96,22 @@ const Navbar = ({ theme, toggleTheme }) => {
         <div className="flex items-center gap-2 md:hidden">
           <button
             onClick={changeLanguage}
+            aria-label={`Changer la langue (${currentLangLabel})`}
             className="p-2 rounded-xl text-text-main hover:bg-brand-blue/10 transition-colors flex items-center justify-center font-bold text-xs"
           >
            {currentLangLabel}
           </button>
           <button 
             onClick={toggleTheme}
+            aria-label={t('nav.theme')}
             className="p-2 rounded-xl text-text-main hover:bg-brand-blue/10 transition-colors"
           >
             {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
           </button>
           <button 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label={isMobileMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+            aria-expanded={isMobileMenuOpen}
             className="rounded-xl p-2 text-text-main hover:bg-brand-blue/10 transition-colors"
           >
             {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}

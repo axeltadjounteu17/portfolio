@@ -162,15 +162,16 @@ const Hero = () => {
           <motion.div variants={fadeUp} className="mt-12 flex items-center gap-8">
              <div className="flex items-center gap-4">
                {[
-                 { icon: <Github size={20} />, url: "https://github.com/axeltadjounteu17" },
-                 { icon: <Linkedin size={20} />, url: "https://linkedin.com/in/axel-renaud-tadjounteu-ngongue" },
-                 { icon: <Mail size={20} />, url: "mailto:tadjounteuaxel@gmail.com" }
+                 { icon: <Github size={20} />, url: "https://github.com/axeltadjounteu17", label: "GitHub" },
+                 { icon: <Linkedin size={20} />, url: "https://www.linkedin.com/in/axel-renaud-tadjounteu-ngongue-060502296", label: "LinkedIn" },
+                 { icon: <Mail size={20} />, url: "mailto:tadjounteuaxel@gmail.com", label: "Email" }
                ].map((social, i) => (
                   <a 
                     key={i}
                     href={social.url} 
                     target="_blank" 
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
+                    aria-label={social.label}
                     className="p-3 glass rounded-xl text-text-muted hover:text-brand-blue hover:border-brand-blue/30 transition-all flex items-center justify-center hover:-translate-y-1"
                   >
                     {social.icon}

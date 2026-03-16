@@ -44,8 +44,8 @@ const Contact = () => {
         setTimeout(() => setSent(false), 5000);
     }, (error) => {
         setLoading(false);
-        console.error('EmailJS Error:', error);
-        alert(`${t('contact.form_error')} ${error.text || JSON.stringify(error)}`);
+        console.error('[INTERNAL] EmailJS Error:', error);
+        alert(t('contact.form_error'));
     });
   };
 
@@ -96,6 +96,7 @@ const Contact = () => {
                       id="user_name"
                       name="user_name"
                       required
+                      maxLength={100}
                       placeholder={t('contact.form_name_ph')}
                       value={formData.user_name}
                       onChange={handleChange}
@@ -112,6 +113,7 @@ const Contact = () => {
                       id="user_email"
                       name="user_email"
                       required
+                      maxLength={200}
                       placeholder={t('contact.form_email_ph')}
                       value={formData.user_email}
                       onChange={handleChange}
@@ -149,6 +151,7 @@ const Contact = () => {
                     name="message"
                     required
                     rows="5"
+                    maxLength={2000}
                     placeholder={t('contact.form_msg_ph')}
                     value={formData.message}
                     onChange={handleChange}
@@ -205,7 +208,7 @@ const Contact = () => {
                   icon: <Linkedin />,
                   label: "LinkedIn",
                   value: "@axel-renaud",
-                  href: "https://linkedin.com/in/axel-renaud-tadjounteu-ngongue",
+                  href: "https://www.linkedin.com/in/axel-renaud-tadjounteu-ngongue-060502296",
                   color: "text-brand-blue",
                   bg: "bg-brand-blue/5",
                 },

@@ -118,3 +118,28 @@
     box-shadow: 0 20px 40px -15px rgba(37, 99, 235, 0.25);
   }
 }
+
+/* Accessibility: Focus-visible for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid var(--color-brand-blue);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Accessibility: Reduced motion for motion-sensitive users */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .tilt-card:hover {
+    transform: none !important;
+  }
+
+  .btn-shine::after {
+    animation: none !important;
+  }
+}
