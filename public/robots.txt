@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-
 Sitemap: https://axeltadjounteu.vercel.app/sitemap.xml

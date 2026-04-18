@@ -44,7 +44,7 @@ const Contact = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formData.honeypot) {
-      console.warn("Bot detected via Honeypot.");
+      if (import.meta.env.DEV) console.warn("Bot detected via Honeypot.");
       return;
     }
     setLoading(true);

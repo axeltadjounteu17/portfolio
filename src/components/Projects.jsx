@@ -6,7 +6,7 @@ import AnimatedTitle from './AnimatedTitle';
 
 const ProgressBar = ({ duration, onComplete, isActive }) => {
   return (
-    <div className="h-1 w-full bg-white/10 rounded-full overflow-hidden mt-4">
+    <div className="h-1 w-full bg-border-subtle rounded-full overflow-hidden mt-4">
       <motion.div
         initial={{ width: 0 }}
         animate={isActive ? { width: "100%" } : { width: 0 }}
@@ -118,7 +118,7 @@ const Projects = () => {
                   transition: { duration: 0.4, ease: [0.33, 1, 0.68, 1] }
                 }}
                 onClick={() => setActiveIndex(index)}
-                className={`relative overflow-hidden cursor-pointer rounded-3xl glass border border-white/5 group transition-all duration-500 ${isActive ? 'bg-white/[0.03]' : 'hover:bg-white/[0.02]'}`}
+                className={`relative overflow-hidden cursor-pointer rounded-3xl glass border border-glass-border group transition-all duration-500 ${isActive ? 'bg-white/[0.03]' : 'hover:bg-brand-blue/[0.02] dark:hover:bg-white/[0.02]'}`}
               >
                 {/* Background Image with Clip-path type reveal */}
                 <div className="absolute inset-0 z-0">
@@ -143,20 +143,20 @@ const Projects = () => {
                 {/* Content */}
                 <div className="relative z-10 h-full flex flex-col p-8 md:p-10">
                   <div className="flex items-center justify-between mb-6">
-                    <div className={`p-4 rounded-2xl bg-white/10 transition-transform duration-500 ${isActive ? 'scale-110' : 'group-hover:scale-105'}`}>
+                    <div className={`p-4 rounded-2xl bg-brand-blue/10 dark:bg-white/10 transition-transform duration-500 ${isActive ? 'scale-110' : 'group-hover:scale-105'}`}>
                       <div className="text-brand-blue">
                         {project.icon}
                       </div>
                     </div>
                     {!isActive && (
-                      <span className="text-xs font-bold text-text-muted mt-2 rotate-0 lg:rotate-90 origin-center opacity-40 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                      <span className="text-xs font-bold text-text-muted mt-2 rotate-0 lg:rotate-90 origin-center opacity-60 group-hover:opacity-100 transition-opacity whitespace-nowrap">
                         {project.year}
                       </span>
                     )}
                   </div>
 
                   <div className="flex-grow flex flex-col justify-end overflow-hidden">
-                    <h3 className={`font-black tracking-tight mb-2 transition-all duration-500 ${isActive ? 'text-3xl md:text-4xl text-white' : 'text-xl text-text-muted group-hover:text-white'}`}>
+                    <h3 className={`font-black tracking-tight mb-2 transition-all duration-500 ${isActive ? 'text-3xl md:text-4xl text-text-main' : 'text-xl text-text-muted group-hover:text-text-main'}`}>
                       {project.title}
                     </h3>
                     
@@ -184,7 +184,7 @@ const Projects = () => {
                           <div className="flex items-center gap-6 pt-4">
                             <button 
                               onClick={(e) => { e.stopPropagation(); setSelectedProject(project); }}
-                              className="px-6 py-3 bg-white text-slate-950 rounded-xl font-bold flex items-center gap-2 hover:scale-105 transition-transform"
+                              className="px-6 py-3 bg-brand-blue text-white rounded-xl font-bold flex items-center gap-2 hover:scale-105 transition-transform hover:bg-brand-blue/90"
                             >
                               {t('common.details') || "Voir Plus"}
                               <ArrowRight size={16} />
@@ -194,7 +194,7 @@ const Projects = () => {
                               target="_blank" 
                               rel="noreferrer"
                               onClick={(e) => e.stopPropagation()}
-                              className="text-white hover:text-brand-blue transition-colors flex items-center gap-2 font-bold text-sm"
+                              className="text-text-main hover:text-brand-blue transition-colors flex items-center gap-2 font-bold text-sm"
                             >
                               <Github size={18} />
                               GitHub
@@ -233,24 +233,24 @@ const Projects = () => {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
                 onClick={(e) => e.stopPropagation()}
-                className="glass w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl relative flex flex-col shadow-2xl"
+                className="glass w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl relative flex flex-col shadow-2xl border border-glass-border"
               >
                 <div className="absolute top-4 right-4 z-20 flex gap-2">
                   <button 
                     onClick={() => setSelectedProject(null)}
-                    className="p-2.5 rounded-full transition-colors bg-white/10 text-white hover:bg-white/20 shadow-sm"
+                    className="p-2.5 rounded-full transition-colors bg-brand-blue/10 dark:bg-white/10 text-text-main dark:text-white hover:bg-brand-blue/20 dark:hover:bg-white/20 shadow-sm"
                   >
                     <X size={18} />
                   </button>
                 </div>
 
-                <div className="p-8 sm:p-12 pb-6 border-b border-white/5">
+                <div className="p-8 sm:p-12 pb-6 border-b border-glass-border">
                   <div className="flex items-center gap-4 mb-6">
                     <div className="p-4 bg-brand-blue/20 rounded-2xl text-brand-blue outline outline-1 outline-brand-blue/30">
                       {selectedProject.icon}
                     </div>
                     <div>
-                      <h3 className="text-2xl sm:text-3xl font-black text-white mb-1">{selectedProject.title}</h3>
+                      <h3 className="text-2xl sm:text-3xl font-black text-text-main mb-1">{selectedProject.title}</h3>
                       <span className="text-xs font-bold text-brand-blue tracking-[0.2em] uppercase">{selectedProject.year}</span>
                     </div>
                   </div>
@@ -258,7 +258,7 @@ const Projects = () => {
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                     <div>
-                      <h4 className="text-xs font-black uppercase tracking-[0.2em] text-white mb-4">Fonctionnalités</h4>
+                      <h4 className="text-xs font-black uppercase tracking-[0.2em] text-text-main mb-4">Fonctionnalités</h4>
                       <ul className="space-y-3">
                         {selectedProject.features.map(f => (
                           <li key={f} className="text-xs text-text-muted flex items-start gap-3">
@@ -269,10 +269,10 @@ const Projects = () => {
                       </ul>
                     </div>
                     <div>
-                      <h4 className="text-xs font-black uppercase tracking-[0.2em] text-white mb-4">Stack</h4>
+                      <h4 className="text-xs font-black uppercase tracking-[0.2em] text-text-main mb-4">Stack</h4>
                       <div className="flex flex-wrap gap-2">
                         {selectedProject.stack.map(s => (
-                          <span key={s} className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-lg text-xs font-bold text-text-muted">
+                          <span key={s} className="px-3 py-1.5 bg-brand-blue/5 dark:bg-white/5 border border-brand-blue/10 dark:border-white/10 rounded-lg text-xs font-bold text-text-muted">
                             {s}
                           </span>
                         ))}
@@ -281,7 +281,7 @@ const Projects = () => {
                   </div>
                 </div>
 
-                <div className="p-8 bg-black/50 border-t border-white/5">
+                <div className="p-8 bg-brand-blue/5 dark:bg-black/50 border-t border-glass-border">
                    <a 
                     href={selectedProject.github} 
                     target="_blank" 

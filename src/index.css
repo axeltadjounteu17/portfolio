@@ -18,8 +18,8 @@
   --color-glass-bg: rgba(255, 255, 255, 0.85);
   --color-glass-border: rgba(37, 99, 235, 0.12);
 
-  --font-mono: "Geist Mono", "Roboto Mono", monospace;
-  --font-sans: "Inter", system-ui, sans-serif;
+  --font-sans: "Google Sans", "Google Sans Display", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "Google Sans Mono", "Geist Mono", "Roboto Mono", monospace;
 
   --shadow-premium:
     0 4px 20px -5px rgba(0, 0, 0, 0.05), 0 8px 30px -10px rgba(0, 0, 0, 0.1);
@@ -55,7 +55,10 @@
   h4,
   h5,
   h6 {
-    @apply tracking-tight font-black;
+    font-family: "Google Sans Display", "Google Sans", system-ui, sans-serif;
+    @apply font-black;
+    letter-spacing: -0.025em;
+    font-feature-settings: "liga" 1, "kern" 1;
   }
 }
 
