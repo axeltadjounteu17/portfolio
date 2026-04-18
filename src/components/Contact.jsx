@@ -2,6 +2,7 @@ import { useRef, useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, Github, Linkedin, CheckCircle, User, MessageSquare } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import AnimatedTitle from './AnimatedTitle';
 
 const WhatsAppIcon = ({ size = 20, className = "" }) => (
   <svg 
@@ -85,13 +86,9 @@ const Contact = () => {
              viewport={{ once: true }}
              className="text-brand-blue font-bold tracking-widest text-xs uppercase mb-2 block"
            >{t('contact.label')}</motion.span>
-           <motion.h2
-             initial={{ opacity: 0, y: 20 }}
-             whileInView={{ opacity: 1, y: 0 }}
-             viewport={{ once: true }}
-             transition={{ delay: 0.1 }}
-             className="text-4xl md:text-5xl font-extrabold tracking-tight"
-           >{t('contact.title1')} <span className="text-brand-blue">{t('contact.title2')}</span></motion.h2>
+           <AnimatedTitle className="text-4xl md:text-5xl">
+             {t('contact.title1')} <span className="text-brand-blue">{t('contact.title2')}</span>
+           </AnimatedTitle>
            <motion.p
              initial={{ opacity: 0, y: 20 }}
              whileInView={{ opacity: 1, y: 0 }}

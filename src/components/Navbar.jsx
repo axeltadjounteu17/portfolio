@@ -62,9 +62,13 @@ const Navbar = ({ theme, toggleTheme }) => {
               }`}
             >
               {link.name}
-              <span className={`absolute bottom-0 left-0 w-full h-0.5 bg-brand-blue transition-transform duration-300 origin-left ${
-                location.pathname === link.path ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
-              }`} />
+              {location.pathname === link.path && (
+                <motion.div 
+                  layoutId="underline"
+                  className="absolute bottom-0 left-0 w-full h-0.5 bg-brand-blue"
+                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                />
+              )}
             </Link>
           ))}
           

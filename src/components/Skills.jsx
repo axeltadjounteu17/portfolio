@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Shield, Cloud, Code, Terminal, Database, Server, Globe, BrainCircuit } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import AnimatedTitle from './AnimatedTitle';
 
 
 
@@ -62,17 +63,11 @@ const Skills = () => {
              viewport={{ once: true }}
              className="text-brand-blue font-bold tracking-widest text-xs uppercase mb-2 block"
            >{t('skills.label')}</motion.span>
-           <motion.h2
-             initial={{ opacity: 0, y: 20 }}
-             whileInView={{ opacity: 1, y: 0 }}
-             viewport={{ once: true }}
-             transition={{ delay: 0.1 }}
-             className="text-4xl md:text-5xl font-extrabold tracking-tight"
-           >
+           <AnimatedTitle className="text-4xl md:text-5xl">
              {t('skills.title1')}
              <span className="text-brand-blue">{t('skills.title2')}</span>
              {t('skills.title3')}
-           </motion.h2>
+           </AnimatedTitle>
            <motion.p
              initial={{ opacity: 0, y: 20 }}
              whileInView={{ opacity: 1, y: 0 }}

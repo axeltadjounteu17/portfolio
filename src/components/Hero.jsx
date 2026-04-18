@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Github, Linkedin, Mail, ChevronRight, Terminal, Download, Trophy } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -51,51 +51,27 @@ const ProfilePhoto = () => {
 
 const Hero = () => {
   const { t } = useTranslation();
-  const [text, setText] = useState('');
   
   const { scrollY } = useScroll();
   // Animation Parallax : Texte descend, image monte au défilement
   const yText = useTransform(scrollY, [0, 500], [0, 80]);
   const yImage = useTransform(scrollY, [0, 500], [0, -50]);
   const opacityScroll = useTransform(scrollY, [0, 400], [1, 0.85]);
-  
+
   const words = useMemo(() => {
-    // We get the array directly from translation file
     const translatedWords = t('hero.words', { returnObjects: true });
     return Array.isArray(translatedWords) ? translatedWords : [];
   }, [t]);
 
-  const [wordIdx, setWordIdx] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [typeSpeed, setTypeSpeed] = useState(100);
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    if (!words || words.length === 0) return;
-
-    const handleType = () => {
-      const current = wordIdx % words.length;
-      const fullText = words[current];
-
-      if (isDeleting) {
-        setText(fullText.substring(0, text.length - 1));
-        setTypeSpeed(50);
-      } else {
-        setText(fullText.substring(0, text.length + 1));
-        setTypeSpeed(100);
-      }
-
-      if (!isDeleting && text === fullText) {
-        setTimeout(() => setIsDeleting(true), 1500);
-      } else if (isDeleting && text === '') {
-        setIsDeleting(false);
-        setWordIdx(prev => prev + 1);
-        setTypeSpeed(100);
-      }
-    };
-
-    const timer = setTimeout(handleType, typeSpeed);
-    return () => clearTimeout(timer);
-  }, [text, isDeleting, wordIdx, words, typeSpeed]);
+    if (words.length <= 1) return;
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % words.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [words]);
 
   return (
     <motion.section style={{ opacity: opacityScroll }} className="min-h-[90vh] flex items-center px-6 relative overflow-hidden pt-12">
@@ -132,15 +108,35 @@ const Hero = () => {
              {t('hero.role')} <span className="text-brand-blue">{t('hero.specialty')}</span>
           </motion.p>
 
-          <motion.div variants={fadeUp} className="flex items-center gap-3 text-lg font-mono mb-8 py-2 px-4 bg-black/5 dark:bg-white/5 rounded-xl w-fit border border-glass-border">
+          <motion.div variants={fadeUp} className="flex items-center gap-3 text-lg font-mono mb-8 py-2 px-4 bg-black/5 dark:bg-white/5 rounded-xl w-fit border border-glass-border min-h-[50px]">
             <Terminal size={20} className="text-brand-blue" />
             <span className="text-text-muted">{t('hero.specialized_in')}</span>
-            <span className="text-brand-violet font-bold underline decoration-brand-violet/30 underline-offset-4">{text}</span>
-            <motion.span 
-              animate={{ opacity: [1, 0] }}
-              transition={{ repeat: Infinity, duration: 0.8 }}
-              className="w-2 h-5 bg-brand-blue"
-            />
+            <div className="flex overflow-hidden">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={index}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  className="flex"
+                >
+                  {words[index]?.split("").map((char, i) => (
+                    <motion.span
+                      key={`${index}-${i}`}
+                      variants={{
+                        initial: { opacity: 0, y: 10, letterSpacing: "0.2em" },
+                        animate: { opacity: 1, y: 0, letterSpacing: "0em" },
+                        exit: { opacity: 0, y: -10, letterSpacing: "0.2em" }
+                      }}
+                      transition={{ duration: 0.4, delay: i * 0.03 }}
+                      className="text-brand-violet font-bold"
+                    >
+                      {char === " " ? "\u00A0" : char}
+                    </motion.span>
+                  ))}
+                </motion.div>
+              </AnimatePresence>
+            </div>
           </motion.div>
 
           <motion.p variants={fadeUp} className="text-lg text-text-muted leading-relaxed max-w-xl mb-12">

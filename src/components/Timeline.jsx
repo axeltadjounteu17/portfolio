@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Award, BookOpen, GraduationCap, Circle, CheckCircle2, Shield, Globe, Database, Monitor, Cloud, BrainCircuit, ShieldCheck } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useRef } from 'react';
+import AnimatedTitle from './AnimatedTitle';
 
 const TimelineTrack = ({ children }) => {
   const containerRef = useRef(null);
@@ -73,13 +74,9 @@ const Timeline = () => {
            viewport={{ once: true }}
            className="text-brand-blue font-bold tracking-widest text-xs uppercase mb-2 block"
          >{t('timeline.label')}</motion.span>
-         <motion.h2
-           initial={{ opacity: 0, y: 20 }}
-           whileInView={{ opacity: 1, y: 0 }}
-           viewport={{ once: true }}
-           transition={{ delay: 0.1 }}
-           className="text-4xl md:text-5xl font-extrabold tracking-tight"
-         >{t('timeline.title1')}<span className="text-brand-blue">{t('timeline.title2')}</span></motion.h2>
+         <AnimatedTitle className="text-4xl md:text-5xl">
+           {t('timeline.title1')}<span className="text-brand-blue">{t('timeline.title2')}</span>
+         </AnimatedTitle>
          <motion.p
            initial={{ opacity: 0, y: 20 }}
            whileInView={{ opacity: 1, y: 0 }}
