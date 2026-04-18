@@ -120,7 +120,7 @@ const Projects = () => {
                 initial={false}
                 animate={{ 
                   flex: isActive ? 4 : 1,
-                  transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+                  transition: { duration: 0.4, ease: [0.33, 1, 0.68, 1] }
                 }}
                 onClick={() => setActiveIndex(index)}
                 className={`relative overflow-hidden cursor-pointer rounded-3xl glass border border-white/5 group transition-all duration-500 ${isActive ? 'bg-white/[0.03]' : 'hover:bg-white/[0.02]'}`}

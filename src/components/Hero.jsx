@@ -128,7 +128,7 @@ const Hero = () => {
                         animate: { opacity: 1, y: 0, letterSpacing: "0em" },
                         exit: { opacity: 0, y: -10, letterSpacing: "0.2em" }
                       }}
-                      transition={{ duration: 0.4, delay: i * 0.03 }}
+                      transition={{ duration: 0.25, delay: i * 0.02 }}
                       className="text-brand-violet font-bold"
                     >
                       {char === " " ? "\u00A0" : char}

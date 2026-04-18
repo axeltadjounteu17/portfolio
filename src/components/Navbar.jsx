@@ -66,7 +66,7 @@ const Navbar = ({ theme, toggleTheme }) => {
                 <motion.div 
                   layoutId="underline"
                   className="absolute bottom-0 left-0 w-full h-0.5 bg-brand-blue"
-                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
                 />
               )}
             </Link>
