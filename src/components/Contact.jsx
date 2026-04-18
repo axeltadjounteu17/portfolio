@@ -71,7 +71,7 @@ const Contact = () => {
         if (import.meta.env.DEV) {
           console.error('[INTERNAL] API Error:', error);
         }
-        alert(t('contact.form_error'));
+        alert(`${t('contact.form_error')} ${error.message}`);
     });
   };
 
