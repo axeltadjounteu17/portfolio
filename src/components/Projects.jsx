@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Github, ExternalLink, Shield, Smartphone, Globe, Activity, X, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -22,8 +22,8 @@ const Projects = () => {
   const { t } = useTranslation();
   const [activeIndex, setActiveIndex] = useState(0);
   const [selectedProject, setSelectedProject] = useState(null);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const duration = 5000; // Durée fixe pour la barre
 
   const projects = [
     {
@@ -76,13 +76,8 @@ const Projects = () => {
     }
   ];
 
-  useEffect(() => {
-    if (isHovered) return;
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % projects.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [isHovered, projects.length]);
+  // Le changement est maintenant piloté exclusivement par le callback onComplete de la ProgressBar
+  // pour garantir que le projet suivant ne s'affiche qu'après chargement complet.
 
   return (
     <section className="py-24 px-6 relative overflow-hidden">
@@ -131,14 +126,18 @@ const Projects = () => {
                     initial={false}
                     animate={{ 
                       clipPath: isActive ? "inset(0% 0% 0% 0%)" : "inset(0% 100% 0% 0%)",
-                      opacity: isActive ? 0.15 : 0
+                      opacity: isActive ? 0.4 : 0
                     }}
                     transition={{ duration: 0.8, ease: "easeInOut" }}
                     className="w-full h-full"
                   >
-                    <img src={project.image} alt="" className="w-full h-full object-cover grayscale brightness-50" />
+                    <img 
+                      src={project.image} 
+                      alt="" 
+                      className={`w-full h-full object-cover transition-all duration-700 ${isActive ? 'grayscale-0 brightness-100 scale-105' : 'grayscale brightness-50'}`} 
+                    />
                   </motion.div>
-                  <div className={`absolute inset-0 bg-gradient-to-br ${project.color}`} />
+                  <div className={`absolute inset-0 bg-gradient-to-br ${project.color} ${isActive ? 'opacity-40' : 'opacity-100'}`} />
                 </div>
 
                 {/* Content */}
@@ -203,7 +202,8 @@ const Projects = () => {
                           </div>
 
                           <ProgressBar 
-                            duration={5000} 
+                            key={activeIndex} // Force le redémarrage de la barre au changement
+                            duration={duration} 
                             isActive={!isHovered}
                             onComplete={() => setActiveIndex((prev) => (prev + 1) % projects.length)} 
                           />
