@@ -43,7 +43,7 @@ export default async function handler(req, res) {
     } else {
       const errorText = await response.text();
       console.error('EmailJS Error:', errorText);
-      return res.status(500).json({ error: 'Erreur lors de l’envoi de l’email' });
+      return res.status(500).json({ error: `EmailJS: ${errorText}` });
     }
   } catch (error) {
     console.error('Server Error:', error);
