@@ -11,14 +11,14 @@ const Projects = () => {
   const projects = [
     {
       title: t('projects.p1_title'),
-      year: "Sept. 2025",
+      year: "2024",
       description: t('projects.p1_desc'),
       features: [t('projects.p1_f1'), t('projects.p1_f2'), t('projects.p1_f3'), t('projects.p1_f4')],
       stack: ["Python", "Scapy", "Snort", "Linux"],
       icon: <Shield className="text-brand-green" />,
       color: "bg-brand-green/10",
-      image: "/projet-1.jpg",
-      github: "https://github.com/axeltadjounteu17"
+      image: "/projet-1.jpg", 
+      github: "https://github.com/axeltadjounteu17/IDS-Python-Scapy"
     },
     {
       title: t('projects.p4_title'),
@@ -29,18 +29,18 @@ const Projects = () => {
       icon: <Globe className="text-brand-blue" />,
       color: "bg-brand-blue/10",
       image: "/projet-4.jpg",
-      github: "https://github.com/axeltadjounteu17"
+      github: "https://github.com/axeltadjounteu17/Cisco-Network-Simulation"
     },
     {
       title: t('projects.p2_title'),
-      year: "Déc. 2025",
+      year: "2025",
       description: t('projects.p2_desc'),
       features: [t('projects.p2_f1'), t('projects.p2_f2'), t('projects.p2_f3'), t('projects.p2_f4')],
       stack: ["Python", "MySQL", "Tkinter"],
       icon: <Activity className="text-brand-blue" />,
       color: "bg-brand-blue/10",
       image: ["/11.png", "/12.png", "/13.png", "/14.png", "/15.png", "/16.png"],
-      github: "https://github.com/axeltadjounteu17/gestion-dechets-hospitaliers"
+      github: "https://github.com/axeltadjounteu17/gestion-hospitaliere"
     },
     {
       title: t('projects.p8_title'),
@@ -90,11 +90,12 @@ const Projects = () => {
                 setCurrentImageIndex(0);
                 setSelectedProject(project);
               }}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="glass overflow-hidden group flex flex-col h-full hover:border-brand-blue/20 transition-all duration-500 rounded-3xl tilt-card cursor-pointer"
+              initial={{ opacity: 0, y: 50, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              whileHover={{ y: -10, scale: 1.02 }}
+              transition={{ delay: index * 0.1, duration: 0.5, type: "spring", stiffness: 120 }}
+              viewport={{ once: true, margin: "-50px" }}
+              className="glass overflow-hidden group flex flex-col h-full border hover:border-brand-blue/30 transition-all duration-300 rounded-3xl cursor-pointer"
             >
               <div className="p-8 flex-grow">
                 <div className="mb-8 flex items-center justify-between">
@@ -229,56 +230,65 @@ const Projects = () => {
                 </div>
 
                 {/* Zone d'image dynamique avec gestion du carrousel au milieu */}
-                <div className="relative w-full min-h-[300px] h-[50vh] bg-black/10 dark:bg-black/50 flex items-center justify-center overflow-hidden group border-y border-glass-border">
-                  {/* Calque pour assombrir fortement l'image selon le thème */}
-                  <div className="absolute inset-0 bg-black/20 dark:bg-black/60 z-10 pointer-events-none" />
-                  
-                  {Array.isArray(selectedProject.image) ? (
+                <div className="relative w-full min-h-[300px] h-[50vh] bg-black/5 dark:bg-black/40 flex items-center justify-center overflow-hidden group border-y border-glass-border">
+                  {selectedProject.image && !selectedProject.image.toString().includes('projet-') ? (
                     <>
-                      <img 
-                        src={selectedProject.image[currentImageIndex]} 
-                        alt={`${selectedProject.title} - Image ${currentImageIndex + 1}`} 
-                        className="w-full h-full object-contain p-4 z-0"
-                      />
-                      {selectedProject.image.length > 1 && (
+                      {/* Calque pour assombrir fortement l'image selon le thème */}
+                      <div className="absolute inset-0 bg-black/10 dark:bg-black/60 z-10 pointer-events-none" />
+                      
+                      {Array.isArray(selectedProject.image) ? (
                         <>
-                          <button 
-                            onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(prev => prev === 0 ? selectedProject.image.length - 1 : prev - 1); }}
-                            className="absolute left-4 p-2 rounded-full bg-black/40 hover:bg-black/60 text-white backdrop-blur-md transition-all opacity-0 group-hover:opacity-100 z-20 shadow-lg"
-                          >
-                            <ChevronLeft size={24} />
-                          </button>
-                          <button 
-                            onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(prev => prev === selectedProject.image.length - 1 ? 0 : prev + 1); }}
-                            className="absolute right-4 p-2 rounded-full bg-black/40 hover:bg-black/60 text-white backdrop-blur-md transition-all opacity-0 group-hover:opacity-100 z-20 shadow-lg"
-                          >
-                            <ChevronRight size={24} />
-                          </button>
-                          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20 p-2 rounded-full bg-black/20 backdrop-blur-sm">
-                            {selectedProject.image.map((_, idx) => (
-                              <button
-                                key={idx}
-                                onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(idx); }}
-                                className={`h-2 rounded-full transition-all shadow-sm ${idx === currentImageIndex ? 'w-5 bg-brand-blue' : 'w-2 bg-white/60 hover:bg-white'}`}
-                              />
-                            ))}
-                          </div>
+                          <img 
+                            src={selectedProject.image[currentImageIndex]} 
+                            alt={`${selectedProject.title} - Image ${currentImageIndex + 1}`} 
+                            className="w-full h-full object-contain p-4 z-0"
+                          />
+                          {selectedProject.image.length > 1 && (
+                            <>
+                              <button 
+                                onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(prev => prev === 0 ? selectedProject.image.length - 1 : prev - 1); }}
+                                className="absolute left-4 p-2 rounded-full bg-black/40 hover:bg-black/60 text-white backdrop-blur-md transition-all opacity-0 group-hover:opacity-100 z-20 shadow-lg"
+                              >
+                                <ChevronLeft size={24} />
+                              </button>
+                              <button 
+                                onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(prev => prev === selectedProject.image.length - 1 ? 0 : prev + 1); }}
+                                className="absolute right-4 p-2 rounded-full bg-black/40 hover:bg-black/60 text-white backdrop-blur-md transition-all opacity-0 group-hover:opacity-100 z-20 shadow-lg"
+                              >
+                                <ChevronRight size={24} />
+                              </button>
+                              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20 p-2 rounded-full bg-black/20 backdrop-blur-sm">
+                                {selectedProject.image.map((_, idx) => (
+                                  <button
+                                    key={idx}
+                                    onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(idx); }}
+                                    className={`h-2 rounded-full transition-all shadow-sm ${idx === currentImageIndex ? 'w-5 bg-brand-blue' : 'w-2 bg-white/60 hover:bg-white'}`}
+                                  />
+                                ))}
+                              </div>
+                            </>
+                          )}
                         </>
+                      ) : (
+                        <img 
+                          src={selectedProject.image} 
+                          alt={selectedProject.title} 
+                          className="w-full h-full object-contain p-4 z-0"
+                        />
                       )}
                     </>
                   ) : (
-                    <img 
-                      src={selectedProject.image} 
-                      alt={selectedProject.title} 
-                      className="w-full h-full object-contain p-4 z-0"
-                    />
+                    /* Fallback si l'image est manquante */
+                    <div className={`w-full h-full flex flex-col items-center justify-center gap-6 ${selectedProject.color} transition-colors duration-500`}>
+                      <div className="p-8 bg-white/10 dark:bg-black/20 rounded-3xl shadow-2xl backdrop-blur-md border border-white/20 scale-125 animate-float">
+                        {selectedProject.icon}
+                      </div>
+                      <div className="text-center">
+                        <span className="text-[10px] font-bold uppercase tracking-[.3em] text-text-muted opacity-50 block mb-2">Visualisation indisponible</span>
+                        <span className="text-sm font-bold text-brand-blue">{selectedProject.title}</span>
+                      </div>
+                    </div>
                   )}
-                  {/* Message si l'image est manquante */}
-                  <div className="absolute inset-0 hidden flex-col items-center justify-center text-text-muted z-0">
-                    <ImageIcon size={48} className="opacity-20 mb-2" />
-                    <span className="text-xs font-bold uppercase tracking-widest">Espace Image</span>
-                    <span className="text-[10px] opacity-70 cursor-text user-select-all">(Ajouter l'image {Array.isArray(selectedProject.image) ? selectedProject.image[0] : selectedProject.image} dans public/)</span>
-                  </div>
                 </div>
 
                 {/* Bouton d'action GitHub en bas */}

@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Github, Linkedin, Mail, ChevronRight, Terminal, Download } from 'lucide-react';
+import { Github, Linkedin, Mail, ChevronRight, Terminal, Download, Trophy } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const stagger = {
@@ -53,6 +53,12 @@ const Hero = () => {
   const { t } = useTranslation();
   const [text, setText] = useState('');
   
+  const { scrollY } = useScroll();
+  // Animation Parallax : Texte descend, image monte au défilement
+  const yText = useTransform(scrollY, [0, 500], [0, 80]);
+  const yImage = useTransform(scrollY, [0, 500], [0, -50]);
+  const opacityScroll = useTransform(scrollY, [0, 400], [1, 0.85]);
+  
   const words = useMemo(() => {
     // We get the array directly from translation file
     const translatedWords = t('hero.words', { returnObjects: true });
@@ -92,20 +98,28 @@ const Hero = () => {
   }, [text, isDeleting, wordIdx, words, typeSpeed]);
 
   return (
-    <section className="min-h-[90vh] flex items-center px-6 relative overflow-hidden pt-12">
+    <motion.section style={{ opacity: opacityScroll }} className="min-h-[90vh] flex items-center px-6 relative overflow-hidden pt-12">
       <div className="mx-auto max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         <motion.div
+          style={{ y: yText }}
           variants={stagger}
           initial="hidden"
           animate="show"
         >
-          <motion.div variants={fadeUp} className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border-brand-green/20 text-brand-green mb-8 shadow-lg shadow-brand-green/5">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-green opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-green"></span>
-            </span>
-            <span className="text-[10px] uppercase font-bold tracking-widest">{t('hero.available')}</span>
-          </motion.div>
+          <div className="flex flex-wrap gap-4 mb-8">
+            <motion.div variants={fadeUp} className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border-brand-green/20 text-brand-green shadow-lg shadow-brand-green/5">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-green opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-green"></span>
+              </span>
+              <span className="text-[10px] uppercase font-bold tracking-widest">{t('hero.available')}</span>
+            </motion.div>
+
+            <motion.div variants={fadeUp} className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border-brand-blue/20 text-brand-blue shadow-lg shadow-brand-blue/5">
+              <Trophy size={14} className="animate-pulse" />
+              <span className="text-[10px] uppercase font-bold tracking-widest">{t('hero.badge_certs')}</span>
+            </motion.div>
+          </div>
 
           <motion.h1 variants={fadeUp} className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 leading-[1.1]">
             <span className="block text-text-main">Axel Renaud</span>
@@ -129,8 +143,8 @@ const Hero = () => {
             />
           </motion.div>
 
-          <motion.p variants={fadeUp} className="text-lg text-text-muted leading-relaxed max-w-xl mb-12 italic">
-            "{t('hero.desc')}"
+          <motion.p variants={fadeUp} className="text-lg text-text-muted leading-relaxed max-w-xl mb-12">
+            {t('hero.desc')}
           </motion.p>
 
           <motion.div variants={fadeUp} className="flex flex-wrap gap-4 sm:gap-6 items-center">
@@ -187,9 +201,10 @@ const Hero = () => {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1 }}
+          style={{ y: yImage }}
+          initial={{ opacity: 0, scale: 0.8, rotateY: 15 }}
+          animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+          transition={{ duration: 1.2, type: "spring", stiffness: 80 }}
           className="relative flex items-center justify-center order-first lg:order-last"
         >
           {/* Cadre décoratif autour de la photo avec Glow */}
@@ -198,7 +213,7 @@ const Hero = () => {
           </div>
         </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

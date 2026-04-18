@@ -1,8 +1,20 @@
 import { useRef, useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, Github, Linkedin, CheckCircle, User, MessageSquare } from 'lucide-react';
-import emailjs from '@emailjs/browser';
 import { useTranslation } from 'react-i18next';
+
+const WhatsAppIcon = ({ size = 20, className = "" }) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 16 16" 
+    fill="currentColor" 
+    className={className}
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
+  </svg>
+);
 
 const Contact = () => {
   const formRef = useRef();
@@ -13,7 +25,8 @@ const Contact = () => {
     user_name: '',
     user_email: '',
     subject: '',
-    message: ''
+    message: '',
+    honeypot: ''
   });
 
   const subjects = useMemo(() => [
@@ -29,22 +42,35 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (formData.honeypot) {
+      console.warn("Bot detected via Honeypot.");
+      return;
+    }
     setLoading(true);
 
-    emailjs.sendForm(
-      import.meta.env.VITE_EMAILJS_SERVICE_ID,
-      import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-      formRef.current,
-      import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-    )
-    .then(() => {
+    fetch('/api/contact', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    })
+    .then(async (response) => {
+        if (response.ok) {
+          setLoading(false);
+          setSent(true);
+          setFormData({ user_name: '', user_email: '', subject: '', message: '', honeypot: '' });
+          setTimeout(() => setSent(false), 5000);
+        } else {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Err');
+        }
+    })
+    .catch((error) => {
         setLoading(false);
-        setSent(true);
-        setFormData({ user_name: '', user_email: '', subject: '', message: '' });
-        setTimeout(() => setSent(false), 5000);
-    }, (error) => {
-        setLoading(false);
-        console.error('[INTERNAL] EmailJS Error:', error);
+        if (import.meta.env.DEV) {
+          console.error('[INTERNAL] API Error:', error);
+        }
         alert(t('contact.form_error'));
     });
   };
@@ -160,6 +186,18 @@ const Contact = () => {
                 </div>
               </div>
 
+              {/* Honeypot field - Hidden from humans */}
+              <div className="hidden" aria-hidden="true">
+                <input
+                  type="text"
+                  name="honeypot"
+                  value={formData.honeypot}
+                  onChange={handleChange}
+                  tabIndex="-1"
+                  autoComplete="off"
+                />
+              </div>
+
               <button
                 type="submit"
                 disabled={loading || sent}
@@ -197,10 +235,18 @@ const Contact = () => {
                   bg: "bg-brand-blue/5",
                 },
                 {
+                  icon: <WhatsAppIcon />,
+                  label: "WhatsApp Business",
+                  value: "+237 698 828 789",
+                  href: "https://wa.me/237698828789",
+                  color: "text-brand-green",
+                  bg: "bg-brand-green/5",
+                },
+                {
                   icon: <Phone />,
                   label: t('contact.phone'),
-                  value: "+237 698 828 789 / 654 057 668",
-                  href: "tel:+237698828789",
+                  value: "+237 654 057 668",
+                  href: "tel:+237654057668",
                   color: "text-brand-violet",
                   bg: "bg-brand-violet/5",
                 },
